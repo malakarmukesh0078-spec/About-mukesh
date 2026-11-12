@@ -1,0 +1,33 @@
+{
+  "settings": {
+    "site_title": "Mukesh Malakar",
+    "first_name": "Mukesh",
+    "last_name": "Malakar",
+    "tagline": "Entrepreneur and creator from Raigarh, Chhattisgarh. I build, create and serve with a local heart.",
+    "roles": "Entrepreneur, Creator, Storyteller, Raigarh Ka Beta",
+    "about_title": "About me",
+    "about": "Namaste! I'm Mukesh Malakar, born and raised in Raigarh, Chhattisgarh. This is the place where I share my work, my stories and what I'm building. Edit this paragraph from the admin panel.",
+    "logo": "",
+    "banner": "",
+    "photo": "",
+    "banner_text": "Welcome to my world",
+    "color_primary": "#f5b83d",
+    "color_accent": "#34c3b0",
+    "color_bg": "#0e1424",
+    "skills_title": "What I can do",
+    "skills": "fa-solid fa-camera|Photography|Product shoots, portraits and photo editing\nfa-solid fa-video|Video & Reels|Shooting, editing and short-form content\nfa-solid fa-laptop-code|Web & Social|Websites, pages and online presence\nfa-solid fa-handshake|Business|Retail, sales and customer service",
+    "stats": "50+|Projects\n3+|Years of experience\n100+|Happy customers",
+    "cta_text": "Have a project or an idea? Let's talk.",
+    "phone": "+91 00000 00000",
+    "whatsapp": "910000000000",
+    "email": "yourmail@example.com",
+    "instagram": "https://instagram.com/",
+    "facebook": "",
+    "youtube": "",
+    "address": "Raigarh, Chhattisgarh, India",
+    "map_title": "Raigarh, Chhattisgarh",
+    "footer": "© 2026 Mukesh Malakar. All rights reserved."
+  },
+  "items": [],
+  "password_hash": ""
+}

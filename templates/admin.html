@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="admin">
+  <div class="admin-head">
+    <h1>Admin panel</h1>
+    <div class="admin-links">
+      <a class="btn ghost sm" href="{{ url_for('home') }}" target="_blank">View website</a>
+      <a class="btn ghost sm" href="{{ admin_path }}/logout">Log out</a>
+    </div>
+  </div>
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-t="settings">Site settings</button>
+    <button class="tab" data-t="portfolio">Portfolio</button>
+    <button class="tab" data-t="password">Password</button>
+  </div>
+
+  <section class="pane active" id="settings">
+    <form method="post" action="{{ admin_path }}/settings" enctype="multipart/form-data">
+      <input type="hidden" name="csrf" value="{{ csrf() }}">
+
+      <h3>Images</h3>
+      <div class="imgs">
+        <div class="imgbox"><label>Logo (top left)<input type="file" name="logo" accept="image/*"></label>
+          {% if s.logo %}<img class="thumb" src="{{ url_for('uploads', name=s.logo) }}" alt=""><label class="chk"><input type="checkbox" name="remove_logo" value="1"> Remove</label>{% endif %}</div>
+        <div class="imgbox"><label>Banner (wide image)<input type="file" name="banner" accept="image/*"></label>
+          {% if s.banner %}<img class="thumb wide" src="{{ url_for('uploads', name=s.banner) }}" alt=""><label class="chk"><input type="checkbox" name="remove_banner" value="1"> Remove</label>{% endif %}</div>
+        <div class="imgbox"><label>Your photo (home page)<input type="file" name="photo" accept="image/*"></label>
+          {% if s.photo %}<img class="thumb" src="{{ url_for('uploads', name=s.photo) }}" alt=""><label class="chk"><input type="checkbox" name="remove_photo" value="1"> Remove</label>{% endif %}</div>
+      </div>
+      <label>Banner text<input name="banner_text" value="{{ s.banner_text }}"></label>
+
+      <h3>Name and intro</h3>
+      <div class="row2">
+        <label>Site title<input name="site_title" value="{{ s.site_title }}"></label>
+        <label>First name<input name="first_name" value="{{ s.first_name }}"></label>
+        <label>Last name<input name="last_name" value="{{ s.last_name }}"></label>
+      </div>
+      <label>Intro line<input name="tagline" value="{{ s.tagline }}"></label>
+      <label>Roles (separate with commas, shown as a typing effect)<input name="roles" value="{{ s.roles }}"></label>
+      <label>About heading<input name="about_title" value="{{ s.about_title }}"></label>
+      <label>About text<textarea name="about" rows="5">{{ s.about }}</textarea></label>
+      <label>Stats (one per line, like <code>50+|Projects</code>)<textarea name="stats" rows="3">{{ s.stats }}</textarea></label>
+      <label>Call-to-action line (bottom of home page)<input name="cta_text" value="{{ s.cta_text }}"></label>
+
+      <h3>What I can do</h3>
+      <label>Section heading<input name="skills_title" value="{{ s.skills_title }}"></label>
+      <label>Skills (one per line: <code>icon|Title|Description</code>). Icons are Font Awesome classes, e.g. <code>fa-solid fa-camera</code><textarea name="skills" rows="6">{{ s.skills }}</textarea></label>
+
+      <h3>Contact</h3>
+      <div class="row2">
+        <label>Phone<input name="phone" value="{{ s.phone }}"></label>
+        <label>WhatsApp number (with 91, no +)<input name="whatsapp" value="{{ s.whatsapp }}"></label>
+        <label>Email<input name="email" value="{{ s.email }}"></label>
+      </div>
+      <div class="row2">
+        <label>Instagram link<input name="instagram" value="{{ s.instagram }}"></label>
+        <label>Facebook link<input name="facebook" value="{{ s.facebook }}"></label>
+        <label>YouTube link<input name="youtube" value="{{ s.youtube }}"></label>
+      </div>
+      <label>Address<input name="address" value="{{ s.address }}"></label>
+      <label>Map heading<input name="map_title" value="{{ s.map_title }}"></label>
+      <label>Footer text<input name="footer" value="{{ s.footer }}"></label>
+
+      <h3>Theme colors</h3>
+      <div class="row2">
+        <label>Primary<input type="color" name="color_primary" value="{{ s.color_primary }}"></label>
+        <label>Accent<input type="color" name="color_accent" value="{{ s.color_accent }}"></label>
+        <label>Background<input type="color" name="color_bg" value="{{ s.color_bg }}"></label>
+      </div>
+      <button class="btn" type="submit">Save changes</button>
+    </form>
+  </section>
+
+  <section class="pane" id="portfolio">
+    <h3>Add new work</h3>
+    <form class="addform" method="post" action="{{ admin_path }}/item/add" enctype="multipart/form-data">
+      <input type="hidden" name="csrf" value="{{ csrf() }}">
+      <label>Title<input name="title" required></label>
+      <label>Description<textarea name="description" rows="3"></textarea></label>
+      <label>Category (for example Photo, Video, Design)<input name="category"></label>
+      <label>Photo or video file<input type="file" name="file" accept="image/*,video/*"></label>
+      <label>Or a YouTube / website link<input name="url" placeholder="https://"></label>
+      <button class="btn" type="submit">Add to portfolio</button>
+    </form>
+
+    <h3>All work ({{ items|length }})</h3>
+    {% for it in items %}
+    <div class="item">
+      <div class="item-media">
+        {% if it.kind=='image' %}<img src="{{ url_for('uploads', name=it.file) }}" alt="">
+        {% elif it.kind=='video' %}<i class="fa-solid fa-film"></i>
+        {% else %}<i class="fa-solid fa-link"></i>{% endif %}
+      </div>
+      <form method="post" action="{{ admin_path }}/item/{{ it.id }}/edit" class="item-form">
+        <input type="hidden" name="csrf" value="{{ csrf() }}">
+        <input name="title" value="{{ it.title }}" aria-label="Title">
+        <input name="category" value="{{ it.category }}" placeholder="Category" aria-label="Category">
+        <textarea name="description" rows="2" aria-label="Description">{{ it.description }}</textarea>
+        {% if it.kind=='link' %}<input name="url" value="{{ it.url }}" aria-label="Link">{% endif %}
+        <button class="btn sm" type="submit">Save</button>
+      </form>
+      <div class="item-actions">
+        <form method="post" action="{{ admin_path }}/item/{{ it.id }}/move/up"><input type="hidden" name="csrf" value="{{ csrf() }}"><button class="btn ghost sm" title="Move up">&uarr;</button></form>
+        <form method="post" action="{{ admin_path }}/item/{{ it.id }}/move/down"><input type="hidden" name="csrf" value="{{ csrf() }}"><button class="btn ghost sm" title="Move down">&darr;</button></form>
+        <form method="post" action="{{ admin_path }}/item/{{ it.id }}/delete" onsubmit="return confirm('Delete this item permanently?')"><input type="hidden" name="csrf" value="{{ csrf() }}"><button class="btn danger sm">Delete</button></form>
+      </div>
+    </div>
+    {% else %}<p class="empty-line">Nothing here yet. Add your first item above.</p>{% endfor %}
+  </section>
+
+  <section class="pane" id="password">
+    <h3>Change password</h3>
+    <form method="post" action="{{ admin_path }}/password">
+      <input type="hidden" name="csrf" value="{{ csrf() }}">
+      <label>New password (at least 6 characters)<input type="password" name="new_password" required autocomplete="new-password"></label>
+      <button class="btn" type="submit">Update password</button>
+    </form>
+  </section>
+</div>
+{% endblock %}

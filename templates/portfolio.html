@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="block page-head">
+  <h1 class="sec-title big">Portfolio</h1>
+  <p class="sub">Photos, videos and projects. Tap a photo to view it full size.</p>
+  {% if cats %}
+  <div class="filters" role="group" aria-label="Filter by category">
+    <button class="chip active" data-f="all">All</button>
+    {% for c in cats %}<button class="chip" data-f="{{ c }}">{{ c }}</button>{% endfor %}
+  </div>
+  {% endif %}
+</section>
+<section class="block tight">
+  {% if items %}
+  <div class="masonry" id="pgrid">
+    {% for it in items %}{% include "_card.html" %}{% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">
+    <i class="fa-regular fa-images"></i>
+    <p>No work added yet.</p>
+    <small>Log in at <b>{{ admin_path }}</b> and add your first photo or video.</small>
+  </div>
+  {% endif %}
+</section>
+<div class="lightbox" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="lb-close" aria-label="Close">&times;</button>
+  <figure><img alt=""><figcaption><b></b><span></span></figcaption></figure>
+</div>
+{% endblock %}

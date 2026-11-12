@@ -1,0 +1,20 @@
+{% set emb = yt_embed(it.url) if it.kind == 'link' else '' %}
+<article class="card" data-cat="{{ it.category }}">
+  <div class="media {{ it.kind }}" {% if it.kind=='image' %}data-lightbox="{{ url_for('uploads', name=it.file) }}" data-title="{{ it.title }}" data-desc="{{ it.description }}" tabindex="0" role="button" aria-label="Open {{ it.title }}"{% endif %}>
+    {% if it.kind == 'image' %}
+      <img loading="lazy" src="{{ url_for('uploads', name=it.file) }}" alt="{{ it.title }}">
+      <span class="zoom"><i class="fa-solid fa-expand"></i></span>
+    {% elif it.kind == 'video' %}
+      <video controls preload="metadata" src="{{ url_for('uploads', name=it.file) }}"></video>
+    {% elif emb %}
+      <iframe src="{{ emb }}" title="{{ it.title }}" allowfullscreen loading="lazy"></iframe>
+    {% else %}
+      <a class="linkbox" href="{{ it.url }}" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i><span>Open link</span></a>
+    {% endif %}
+  </div>
+  <div class="card-body">
+    {% if it.category %}<span class="tag">{{ it.category }}</span>{% endif %}
+    <h3>{{ it.title }}</h3>
+    {% if it.description %}<p>{{ it.description }}</p>{% endif %}
+  </div>
+</article>

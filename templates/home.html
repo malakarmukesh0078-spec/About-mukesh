@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <p class="greet">Namaste, I'm</p>
+    <h1 class="name" aria-label="{{ s.first_name }} {{ s.last_name }}">
+      <span class="line" aria-hidden="true">{% for ch in s.first_name %}<span class="ch" style="--i:{{ loop.index0 }}">{{ ch }}</span>{% endfor %}</span>
+      <span class="line l2" aria-hidden="true">{% for ch in s.last_name %}<span class="ch" style="--i:{{ loop.index0 + s.first_name|length }}">{{ ch }}</span>{% endfor %}</span>
+    </h1>
+    <div class="specimen" aria-hidden="true">
+      <span class="sp1">{{ s.first_name }} {{ s.last_name }}</span>
+      <span class="sp2">{{ s.first_name }} {{ s.last_name }}</span>
+      <span class="sp3">{{ s.first_name }} {{ s.last_name }}</span>
+      <span class="sp4">{{ s.first_name }} {{ s.last_name }}</span>
+      <span class="sp5">{{ s.first_name }} {{ s.last_name }}</span>
+      <span class="sp6">{{ s.first_name }} {{ s.last_name }}</span>
+    </div>
+    <p class="roles-line"><span id="typed" data-roles="{{ roles|join('|') }}">{{ roles[0] if roles }}</span><i class="caret"></i></p>
+    <p class="lede">{{ s.tagline }}</p>
+    <div class="hero-btns">
+      <a class="btn" href="{{ url_for('portfolio') }}">View my work</a>
+      <a class="btn ghost" href="{{ url_for('contact') }}">Get in touch</a>
+    </div>
+  </div>
+  <div class="hero-photo">
+    <div class="frame">
+      {% if s.photo %}<img src="{{ url_for('uploads', name=s.photo) }}" alt="{{ s.first_name }} {{ s.last_name }}">
+      {% else %}<div class="monogram">{{ s.first_name[:1] }}{{ s.last_name[:1] }}</div>{% endif %}
+    </div>
+    <svg class="orbit" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100" cy="100" r="96"/><circle class="o2" cx="100" cy="100" r="80"/></svg>
+  </div>
+</section>
+
+<section class="block about">
+  <h2 class="sec-title">{{ s.about_title }}</h2>
+  <div class="about-grid">
+    <p class="about-text">{{ s.about }}</p>
+    <div class="stats">
+      {% for num, label in stats %}
+      <div class="stat"><b class="count" data-val="{{ num }}">{{ num }}</b><span>{{ label }}</span></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% if featured %}
+<section class="block">
+  <div class="sec-row">
+    <h2 class="sec-title">Selected work</h2>
+    <a class="more" href="{{ url_for('portfolio') }}">See all work <i class="fa-solid fa-arrow-right"></i></a>
+  </div>
+  <div class="masonry">
+    {% for it in featured %}{% include "_card.html" %}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="cta">
+  <h2>{{ s.cta_text }}</h2>
+  <a class="btn" href="{{ url_for('contact') }}">Contact me</a>
+</section>
+{% endblock %}

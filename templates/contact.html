@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="block page-head">
+  <h1 class="sec-title big">Contact</h1>
+  <p class="sub">The quickest way to reach me is WhatsApp or a call.</p>
+</section>
+
+<section class="block tight contact-wrap">
+  <div class="contact-list">
+    {% if s.whatsapp %}<a class="c-item wa" href="https://wa.me/{{ s.whatsapp }}" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i><div><small>WhatsApp</small><b>Send a message</b></div></a>{% endif %}
+    {% if s.phone %}<a class="c-item" href="tel:{{ s.phone }}"><i class="fa-solid fa-phone"></i><div><small>Phone</small><b>{{ s.phone }}</b></div></a>{% endif %}
+    {% if s.instagram %}<a class="c-item ig" href="{{ s.instagram }}" target="_blank" rel="noopener"><i class="fa-brands fa-instagram"></i><div><small>Instagram</small><b>Follow me</b></div></a>{% endif %}
+    {% if s.facebook %}<a class="c-item fb" href="{{ s.facebook }}" target="_blank" rel="noopener"><i class="fa-brands fa-facebook-f"></i><div><small>Facebook</small><b>Connect</b></div></a>{% endif %}
+    {% if s.youtube %}<a class="c-item yt" href="{{ s.youtube }}" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i><div><small>YouTube</small><b>Watch my channel</b></div></a>{% endif %}
+    {% if s.email %}<a class="c-item" href="mailto:{{ s.email }}"><i class="fa-solid fa-envelope"></i><div><small>Email</small><b>{{ s.email }}</b></div></a>{% endif %}
+    {% if s.address %}<div class="c-item static"><i class="fa-solid fa-location-dot"></i><div><small>Based in</small><b>{{ s.address }}</b></div></div>{% endif %}
+  </div>
+
+  <div class="map-card">
+    <div class="map-title"><i class="fa-solid fa-location-crosshairs"></i> {{ s.map_title }}</div>
+    <svg id="cgmap" viewBox="0 0 440 500" role="img" aria-label="Map of Chhattisgarh with Raigarh district highlighted"></svg>
+    <p class="map-note">Illustrative map. Raigarh district highlighted.</p>
+  </div>
+</section>
+
+<section class="block">
+  <h2 class="sec-title">{{ s.skills_title }}</h2>
+  <div class="skills">
+    {% for icon, title, desc in skills %}
+    <div class="skill"><i class="{{ icon }}"></i><h3>{{ title }}</h3><p>{{ desc }}</p></div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
